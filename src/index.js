@@ -29738,6 +29738,22 @@ app.get('/solar-cycle-6-month', (req, res) => {
 
 })
 
+app.get('/solar-cycle-last-3-years', (req, res) => {
+  fetch('https://services.swpc.noaa.gov/json/solar-cycle/observed-solar-cycle-indices.json', {
+    headers: {
+      accept: 'application/json'
+    },
+    signal: AbortSignal.timeout(80000),
+  })
+  .then(response => response.json())
+  .then(data => res.send(data.reverse().slice(0,31)))
+  .catch(error => res.send(
+    error.cause
+  ))
+    
+
+})
+
 app.listen(port, ()=> {
   console.log("Running ...")
 })
